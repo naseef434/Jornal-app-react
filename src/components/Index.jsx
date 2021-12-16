@@ -9,10 +9,10 @@ export default function Index() {
 
     const [journal, setJournal] = useState(
         {
-            entryno: '',
-            file: '',
+            entryNumber: '',
+            file_name: '',
             date: '',
-            check: false,
+            check_field: false,
 
         }
     )
@@ -96,9 +96,21 @@ export default function Index() {
             debit: debitFields,
             credit: creditFields
         }
+        try{
+            fetch('http://127.0.0.1:8000/api/journal/', {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			}
+		})
+        }catch(err){
+            console.log(err);
+        }
         console.log(body);
-
     }
+    
+
     // console.log(journal);
     return (
         <>
