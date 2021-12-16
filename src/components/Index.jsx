@@ -3,8 +3,27 @@ import { Container, Row } from 'react-bootstrap'
 import Buttons from './Buttons'
 import Credit from './Credit'
 import Debit from './Debit'
+import Journal from './Journal'
 
 export default function Index() {
+
+    const [journal, setJournal] = useState(
+        {
+            entryno: '',
+            file: '',
+            date: '',
+            check: false,
+
+        }
+    )
+
+    const handleJournalOnchange = (event) => {
+        const { name, value } = event.target
+        setJournal({ ...journal, [name]: value })
+
+
+    }
+
     const [creditFields, setCreditFields] = useState([
         { account: "", debit: "", credit: "", discription: "" }
     ])
@@ -37,15 +56,15 @@ export default function Index() {
         values[index][event.target.name] = event.target.value
         setCreditFields(values);
         //declare an empty array for storing debit amount
-        let debit = [];
+        let credit = [];
         let sum = 0;
         //insert each debit element to debt arrayt
         creditFields.forEach(element => {
-            debit.push(element.debit)
+            credit.push(element.credit)
         });
         //finding total debit anount and set debit state 
-        for (let i = 0; i < debit.length; i++) {
-            sum += parseInt(debit[i]) || 0;
+        for (let i = 0; i < credit.length; i++) {
+            sum += parseInt(credit[i]) || 0;
         }
         setCreditValue(sum)
     }
@@ -69,16 +88,29 @@ export default function Index() {
         values.splice(index, 1)
         setCreditFields(values)
     }
+
+
+    const saveData = (event) => {
+        let body = {
+            ...journal,
+            debit: debitFields,
+            credit: creditFields
+        }
+        console.log(body);
+
+    }
+    // console.log(journal);
     return (
         <>
             <div>
+                <Journal journal={journal} setJournal={setJournal} journalHandle={handleJournalOnchange} />
                 <Container>
                     <Row>
                         <Debit inputFields={debitFields} handleChange={handleChangeDebit} handleRemove={removeDebitField} handleAddField={handleAddDebitField} />
                         <Credit inputFields={creditFields} handleChange={handleChangeCredit} handleRemove={removeCreditField} handleAddField={handleAddCreditField} />
                     </Row>
 
-                    <Buttons creditValue={creditValue} debitValue={debitValue} isEqual={creditValue === debitValue ? true : false} />
+                    <Buttons creditValue={creditValue} debitValue={debitValue} isEqual={creditValue === debitValue ? true : false} save={saveData} />
                 </Container>
 
             </div>

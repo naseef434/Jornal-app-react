@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 
-export default function Debit({inputFields, handleChange, handleRemove, handleAddField}) {
+export default function Debit({ inputFields, handleChange, handleRemove, handleAddField }) {
     return (
         <>
             {inputFields.map((inputField, index) => (
